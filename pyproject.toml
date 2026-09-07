@@ -1,0 +1,152 @@
+[project]
+name = 'dummy-release-automations-check'
+dynamic = ['version', 'readme']
+description = 'A dummy project to check release automations'
+requires-python = '>=3.11'
+license = 'MIT'
+license-files = ['LICENSE']
+authors = [
+    {'name' = 'Leonid Povar', 'email' = 'leonid.povar@example.com'},
+]
+keywords = ['dummy', 'release', 'automations']
+classifiers = [
+    'Development Status :: 1 - Planning',
+    'Intended Audience :: Developers',
+    'Programming Language :: Python :: 3',
+]
+
+dependencies = []
+
+[project.urls]
+Homepage = 'https://github.com/leoncleonc/dummy-release-automations-check'
+Source = 'https://github.com/leoncleonc/dummy-release-automations-check'
+
+[dependency-groups]
+dev = [
+    { include-group = 'linting' },
+    { include-group = 'typechecking' },
+    { include-group = 'testing' },
+]
+linting = [
+    'ruff',
+    'pyright',
+]
+typechecking = [
+    'mypy',
+    'pyright',
+]
+testing = [
+    'pytest',
+    'pytest-mock',
+    'pytest-benchmark',
+    'pytest-pretty',
+    'coverage',
+]
+
+[build-system]
+requires = ['hatchling', 'hatch-vcs', 'hatch-fancy-pypi-readme>=22.5.0']
+build-backend = 'hatchling.build'
+
+[tool.hatch.version]
+source = 'vcs'
+
+# [tool.hatch.build.hooks.vcs]
+# version-file = 'src/dummy_release_automations_check/version.py'
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.metadata.hooks.fancy-pypi-readme]
+content-type = 'text/markdown'
+fragments = [
+    {path = 'README.md'},
+    {text = "\n## Changelog\n\n"},
+    {path = 'CHANGELOG.md', start-after = '## Unreleased'},
+]
+
+[tool.hatch.publish.index.repos.test]
+url = 'https://test.pypi.org/legacy/'
+
+[tool.pytest]
+testpaths = ['tests']
+strict = true
+
+[tool.uv]
+default-groups = []
+
+[tool.ruff]
+line-length = 80
+target-version = 'py311'
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+[tool.ruff.format]
+quote-style = 'single'
+
+[tool.ruff.lint]
+select = [
+    'ALL',
+]
+ignore = [
+    'CPY001',  # No need to add copyright notice into every file
+]
+flake8-quotes = {inline-quotes = 'single', multiline-quotes = 'double'}
+isort = { known-first-party = ['dummy_release_automations_check'] }
+mccabe = { max-complexity = 5 }
+pydocstyle = { convention = 'google' }
+
+[tool.ruff.lint.per-file-ignores]
+'tests/*' = [
+    'S101',  # Assert statements are used in tests
+]
+
+[tool.coverage.run]
+source = ['src', 'tests']
+branch = true
+context = 'dynamic'
+
+[tool.coverage.report]
+precision = 2
+show-missing = true
+
+[tool.pyright]
+include = ['src', 'tests']
+strict = true
+enableExperimentalFeatures = false
+
+[tool.mypy]
+python_version = '3.11'
+files = ['src', 'tests']
+strict = true
+exclude_gitignore = true
+warn_no_return = true
+warn_return_any = true
+warn_redundant_casts = true
+warn_unused_configs = true
+warn_unreachable = true
